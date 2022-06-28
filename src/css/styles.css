@@ -19,6 +19,16 @@ body {
   margin-bottom: 16px;
 }
 
+li {
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  width: 30px;
+  height: 20px;
+}
+
 .country-list {
   list-style-type: none;
 }
