@@ -12,23 +12,30 @@ formInput.addEventListener('input', debounce(onInputSearch, DEBOUNCE_DELAY));
 function onInputSearch(e) {
   let name = formInput.value;
   let trimmedName = name.trim();
-  API.fetchCountries(trimmedName)
-    .then(countries => {
-      if (countries.length > 10) {
-        Notify.info(
-          'Too many matches found. Please enter a more specific name.'
-        );
-        return;
-      }
-      if (countries.length <= 10 && countries.length >= 2) {
-        renderCountries(countries);
-        return;
-      }
-      if (countries.length == 1) {
-        renderOneCountry(countries[0]);
-      }
-    })
-    .catch(Notify.failure('Oops, there is no country with that name'));
+  if (trimmedName) {
+    API.fetchCountries(trimmedName)
+      .then(countries => {
+        if (countries.length > 10) {
+          Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          );
+          return;
+        }
+        if (countries.length <= 10 && countries.length >= 2) {
+          renderCountries(countries);
+          return;
+        }
+        if (countries.length == 1) {
+          renderOneCountry(countries[0]);
+        }
+      })
+      .catch(error =>
+        Notify.failure('Oops, there is no country with that name')
+      );
+  } else {
+    trimmedName = '';
+    countryList.innerHTML = '';
+  }
 }
 
 function renderCountries(countries) {
@@ -52,6 +59,6 @@ function renderOneCountry(country) {
     </li>
     <li><b>Capital:</b> ${country.capital}</li>
     <li><b>Population:</b> ${country.population}</li>
-    <li><b>Languages:</b> ${country.languages[0].name}</li>
+    <li><b>Languages:</b> ${country.languages.map(lang => lang.name)}</li>
       `;
 }
