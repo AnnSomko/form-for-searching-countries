@@ -20,7 +20,7 @@ function onInputSearch(e) {
         );
         return;
       }
-      if (countries.length <= 10) {
+      if (countries.length <= 10 && countries.length >= 2) {
         renderCountries(countries);
         return;
       }
@@ -47,15 +47,11 @@ function renderCountries(countries) {
 function renderOneCountry(country) {
   countryList.innerHTML = `
     <li>
-      <li class="list_item"><img src="${
-        country.flags.png
-      }" width="30" height="20"></li>
+      <li class="list_item"><img src="${country.flags.png}"></li>
       <li class="list_item"><h2>${country.name}</h2></li>
     </li>
     <li><b>Capital:</b> ${country.capital}</li>
     <li><b>Population:</b> ${country.population}</li>
-    <li><b>Languages:</b> ${Object.values(country.languages).join(', ')}</li>
+    <li><b>Languages:</b> ${country.languages[0].name}</li>
       `;
 }
-
-//.filter(el => el.name <= 10)
